@@ -13,7 +13,7 @@ def main(page_start: int, page_end: int):
 
     while page_number != page_end + 1:
         print(f'Scraping page {page_number}')
-        page = requests.get(f'https://autoplius.lt/skelbimai/naudoti-automobiliai?page_nr={page_number}')
+        page = requests.get(f'https://autoplius.lt/skelbimai/naudoti-automobiliai?page_nr={page_number}', headers={'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'})
         tree = html.fromstring(page.content)
         sold_cars_hrefs = tree.xpath('//a[@class="announcement-item is-sold is-inactive"]')
         sold_cars_photos = tree.xpath(
@@ -30,10 +30,6 @@ def main(page_start: int, page_end: int):
             print(f'Page {page_number}. Sold car href:{href}. Image url: {image_src}. Price: {price}. Title: {title}')
             all_sold_cars_hrefs.append(f'{href} {title} {price} {image_src}')
         page_number += 1
-        if page_number % 100 == 0:
-            print('Sleeping for 2secs..')
-            time.sleep(2)
-            print('Continuing on!')
 
     all_sold_cars_hrefs.sort()
     f = open(f"cars/sold-cars-{datetime.utcnow()}.txt", "a")

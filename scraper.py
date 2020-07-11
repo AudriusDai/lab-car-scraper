@@ -3,8 +3,8 @@ from datetime import datetime
 
 import requests
 
-page_number = 248
-total_pages = 1982
+page_number = 1
+total_pages = 5
 all_sold_cars_hrefs = []
 
 while page_number != total_pages:
@@ -16,8 +16,6 @@ while page_number != total_pages:
         print(f'Page {page_number}. Sold car href:', car.attrib.get('href'))
         all_sold_cars_hrefs.append(href)
     page_number += 1
-
-
 
 f = open(f"cars/sold-cars-{datetime.utcnow()}.txt", "a")
 for car_href in all_sold_cars_hrefs:
